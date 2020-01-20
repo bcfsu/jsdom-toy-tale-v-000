@@ -15,37 +15,77 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   return fetch('http://localhost:3000/toys')
     .then(res => res.json())
-    .then(json => makeCards(json))
+    .then(json => addCards(json))
     .catch(error => showError(error))
 })
 
-function makeCards(toys) {
+document.addEventListener('submit', (e) => {
+  // e.preventDefault()
+  const configObject = getConfigObject()
+  return fetch('http://localhost:3000/toys', configObject)
+    .then(res => res.json())
+    .then(json => addCards(json))
+    .catch(error => showError(error))
+})
+
+
+
+function addCards(toys) {
+  if (toys.length) {
+    toys.forEach(toy => {
+      getToyAttributes(toy)
+    })
+  } else {
+    getToyAttributes(toy)
+  }
+}
+
+function getToyAttributes(toy) {
   const toyCollection = document.querySelector("#toy-collection")
 
-  toys.forEach(toy => {
-    const toyCard = document.createElement('div')
-    toyCard.setAttribute('class', 'card')
+  const toyCard = document.createElement('div')
+  toyCard.setAttribute('class', 'card')
 
-    const toyHeader = document.createElement('h2')
-    toyHeader.innerText = toy.name
-    toyCard.appendChild(toyHeader)
+  const toyHeader = document.createElement('h2')
+  toyHeader.innerText = toy.name ? toy.name : "N/A"
+  toyCard.appendChild(toyHeader)
 
-    const toyImage = document.createElement('img')
-    toyImage.setAttribute('src', toy.image)
-    toyImage.setAttribute('class', 'toy-avatar')
-    toyCard.appendChild(toyImage)
+  const toyImage = document.createElement('img')
+  toyImage.setAttribute('src', toy.image)
+  toyImage.setAttribute('class', 'toy-avatar')
+  toyCard.appendChild(toyImage)
 
-    const toyLikes = document.createElement('p')
-    toyLikes.innerText = toy.likes 
-    toyCard.appendChild(toyLikes)
+  const toyLikes = document.createElement('p')
+  toyLikes.innerText = toy.likes ? toy.likes : "0"
+  toyCard.appendChild(toyLikes)
 
-    const likeButton = document.createElement('button')
-    likeButton.setAttribute('class', 'like-btn')
-    likeButton.innerText = `Like <3`
-    toyCard.appendChild(likeButton)
-
-    toyCollection.appendChild(toyCard)
+  const likeButton = document.createElement('button')
+  likeButton.setAttribute('class', 'like-btn')
+  likeButton.innerText = `Like <3`
+  toyCard.appendChild(likeButton)
+  likeButton.addEventListener('click', (e) => {
+    increaseLikes(toy, e.target)
   })
+
+  toyCollection.appendChild(toyCard)
+}
+
+function increaseLikes(toy, target) {
+  const configObject = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      "likes": toy.likes + 1
+    })
+  }
+  return fetch(`http://localhost:3000/toys/${toy.id}`, configObject)
+    .then(res => res.json())
+    .then(json => {
+    // update the target's card's like number based on the json response
+})
 }
 
 function showError(e) {
@@ -54,4 +94,22 @@ function showError(e) {
   const div = document.createElement('div')
   div.innerText = errorMessage
   container.appendChild(div)
+}
+
+function getConfigObject() {
+  const configuration = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept" : "application/json"
+    }
+  }
+  const toyName = document.querySelector('input[name="name"]').value
+  const toyImage = document.querySelector('input[name="image"]').value
+  configuration.body = JSON.stringify({
+    name: toyName,
+    image: toyImage,
+    likes: "0"
+  })
+  return configuration
 }

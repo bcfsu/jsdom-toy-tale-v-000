@@ -10,7 +10,7 @@
       "id": 2,
       "name": "Buzz Lightyear",
       "image": "http://www.pngmart.com/files/6/Buzz-Lightyear-PNG-Transparent-Picture.png",
-      "likes": 8
+      "likes": 9
     },
     {
       "id": 3,
@@ -47,6 +47,31 @@
       "name": "Little Green Men",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Alien-PNG-File.png",
       "likes": -2
+    },
+    {
+      "name": "Bob",
+      "image": "Burger",
+      "id": 9
+    },
+    {
+      "name": "Britt",
+      "image": "http://brittcumens.com/img/brittheadshot_guru.png",
+      "id": 10
+    },
+    {
+      "name": "Louise",
+      "image": "https://vignette.wikia.nocookie.net/bobsburgerpedia/images/b/b9/Louise_render.png",
+      "id": 11
+    },
+    {
+      "name": "Gayle",
+      "image": "https://vignette.wikia.nocookie.net/bobsburgerpedia/images/2/27/Gayle.png",
+      "id": 12
+    },
+    {
+      "name": "Linda",
+      "image": "https://vignette.wikia.nocookie.net/bobsburgerpedia/images/b/b7/Lindab.png",
+      "id": 13
     }
   ]
 }
